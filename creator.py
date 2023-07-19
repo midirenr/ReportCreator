@@ -19,7 +19,7 @@ def send_request(url: str, timeout=10):
         return requests.get(url, timeout=timeout)
 
     except requests.exceptions.Timeout:
-        print('Ошибка подключения: Время ожидания ответа превысило 10 секунд.')
+        raise TimeoutExceeded(f'Превышено время ожидания ответа от сервера {url}, более {timeout} секунд')
 
     except requests.exceptions.ConnectionError:
-        print('Неполадки в сети: отказ от соединения')
+        raise NetworkProblem(f'Не удалось подключиться к серверу {url}')
