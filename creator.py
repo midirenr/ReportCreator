@@ -34,7 +34,7 @@ def validate_response(response) -> bool:
 
     return:
     True: в случае прохождение проверки
-    False: в провала проверки
+    False: в случае провала проверки
     """
     if response.status_code == requests.codes.ok and 'application/json' in response.headers['Content-Type']:
         return True
