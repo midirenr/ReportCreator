@@ -23,3 +23,20 @@ def send_request(url: str, timeout=10):
 
     except requests.exceptions.ConnectionError:
         raise NetworkProblem(f'Не удалось подключиться к серверу {url}')
+
+
+def validate_response(response) -> bool:
+    """
+    Проверить response на status_code=200 и application/json в Content-Type
+
+    Ключевые аргументы:
+    response: объект response (ответ от сервера)
+
+    return:
+    True: в случае прохождение проверки
+    False: в провала проверки
+    """
+    if response.status_code == requests.codes.ok and 'application/json' in response.headers['Content-Type']:
+        return True
+    else:
+        return False
