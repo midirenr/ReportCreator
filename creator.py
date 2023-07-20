@@ -42,6 +42,97 @@ def validate_response(response) -> bool:
         return False
 
 
+def clearing_data_from_todos_api(response) -> list[dict]:
+    """
+    Очистить от некорректных данных полученных от todos API
+
+    Ключевые аргументы:
+    response: объект response (ответ от сервера)
+
+    Цель:
+    Отфильтровать данные полученные от API
+
+    Описание:
+    - Получает данные из response;
+    - Проходит циклом по списку словарей полученному из response, где:
+        1) Проверяет наличие данных необходимых для формирования отчета и их тип данных
+        2) Добавляет валидные словари в список
+
+    return: список очищенных словарей
+    """
+    if response.url != 'https://json.medrocket.ru/todos':
+        raise IncorrectResponseException(f'Функция validate_data_from_todos_api '
+                                         f'ожидала получить ответ от https://json.medrocket.ru/todos, '
+                                         f'но получила от {response.url}')
+
+    list_of_tasks = response.json()
+    validated_data_list = []
+
+    for task in list_of_tasks:
+        if 'userId' not in task.keys() or type(task['userId']) != int:
+            continue
+
+        if 'id' not in task.keys() or type(task['id']) != int:
+            continue
+
+        if 'title' not in task.keys() or type(task['title']) != str:
+            continue
+
+        if 'completed' not in task.keys() or type(task['completed']) != bool:
+            continue
+
+        validated_data_list.append(task)
+
+    return validated_data_list
+
+
+def clearing_data_from_users_api(response) -> list[dict]:
+    """
+    Очистить от некорректных данных полученных от users API
+
+    Ключевые аргументы:
+    response: объект response (ответ от сервера)
+
+    Цель:
+    Отфильтровать данные полученные от API
+
+    Описание:
+    - Получает данные из response;
+    - Проходит циклом по списку словарей полученному из response, где:
+        1) Проверяет наличие данных необходимых для формирования отчета и их тип данных
+        2) Добавляет валидные словари в список
+
+    return: список очищенных словарей
+    """
+    if response.url != 'https://json.medrocket.ru/users':
+        raise IncorrectResponseException(f'Функция validate_data_from_users_api '
+                                         f'ожидала получить ответ от https://json.medrocket.ru/users, '
+                                         f'но получила от {response.url}')
+
+    list_of_users = response.json()
+    validated_data_list = []
+
+    for task in list_of_users:
+        if 'name' not in task.keys() or type(task['name']) != str:
+            continue
+
+        if 'email' not in task.keys() or type(task['email']) != str:
+            continue
+
+        if 'username' not in task.keys() or type(task['username']) != str:
+            continue
+
+        if 'company' not in task.keys() or type(task['company']) != dict:
+            continue
+
+        if 'name' not in task['company'].keys() or type(task['company']['name']) != str:
+            continue
+
+        validated_data_list.append(task)
+
+    return validated_data_list
+
+
 def correlate_users_and_tasks(users: list[dict], tasks: list[dict]) -> None:
     """
     Установить соотношение между users и tasks
