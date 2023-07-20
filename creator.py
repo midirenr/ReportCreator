@@ -146,11 +146,11 @@ def correlate_users_and_tasks(users: list[dict], tasks: list[dict]) -> None:
     Каждая задача связана с юзером по ключу userId.
 
     Описание:
-    - проходит циклом по каждому словарю в двух принятых в качестве аргумента списках;
-    - создает новые пары ключ-значение в словаре из списка users:
-    completed_task: словарь из списка tasks у которого completed=True
-    uncompleted_task: словарь из списка tasks у которого completed=False
-    - в случае совпадения user['id'] и task['userId'] добавляет task в user['completed_task'/'uncompleted_task']
+    - проходит циклом по каждому словарю в двух принятых в качестве аргумента списках, где:
+        1) создает новые пары ключ-значение в словаре из списка users:
+        completed_task: словарь из списка tasks у которого completed=True
+        uncompleted_task: словарь из списка tasks у которого completed=False
+        2) в случае совпадения user['id'] и task['userId'] добавляет task в user['completed_task'/'uncompleted_task']
     """
     for user in users:
         user['completed_task'] = []
