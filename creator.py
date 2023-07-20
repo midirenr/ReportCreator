@@ -1,7 +1,12 @@
+import os
+
 import requests
 
+from utils import create_data_to_write, get_date_time_from_data, rename_old_report
+from exceptions import IncorrectResponseException, NetworkProblemException, TimeoutExceededException
 
-def send_request(url: str, timeout=10):
+
+def send_request(url: str, timeout=10.0):
     """
     Отправить запрос по url
 
