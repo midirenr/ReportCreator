@@ -22,12 +22,10 @@ def send_request(url: str, timeout=10.0):
     """
     try:
         return requests.get(url, timeout=timeout)
-
     except requests.exceptions.Timeout:
-        raise TimeoutExceeded(f'Превышено время ожидания ответа от сервера {url}, более {timeout} секунд')
-
+        raise TimeoutExceededException(f'Превышено время ожидания ответа от сервера {url}, более {timeout} секунд')
     except requests.exceptions.ConnectionError:
-        raise NetworkProblem(f'Не удалось подключиться к серверу {url}')
+        raise NetworkProblemException(f'Не удалось подключиться к серверу {url}')
 
 
 def validate_response(response) -> bool:
